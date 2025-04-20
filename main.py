@@ -35,19 +35,23 @@ import argparse
 
 def spring_mass_system(t, state, k, m, c, u):
     """
-    State space representation of spring-mass system
+    State space representation of spring-mass system using matrix operations
     state[0] = x_1 (position)
     state[1] = x_2 (velocity)
     """
-    x1, x2 = state
+    # State matrix A
+    A = np.array([
+        [0, 1],
+        [-k/m, -c/m]
+    ])
     
-    # State equations:
-    # x1' = x2
-    # x2' = (-k * x1 - c * x2 + u) / m
-    dx1_dt = x2
-    dx2_dt = (-k * x1 - c * x2 + u) / m
+    # Input matrix B
+    B = np.array([0, 1/m])
     
-    return [dx1_dt, dx2_dt]
+    # State derivative: x' = A * x + B * u
+    state_derivative = A @ state + B * u
+    
+    return state_derivative
 
 def main():
     # Parse command line arguments
